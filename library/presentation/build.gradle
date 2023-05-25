@@ -1,0 +1,80 @@
+plugins {
+    id 'com.android.library'
+    id 'org.jetbrains.kotlin.android'
+    id 'com.google.dagger.hilt.android'
+    id 'kotlin-kapt'
+}
+
+android {
+    namespace 'com.example.presentation'
+    compileSdk 33
+
+    defaultConfig {
+        minSdk 24
+        targetSdk 33
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        consumerProguardFiles "consumer-rules.pro"
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+
+    buildFeatures {
+        compose true
+    }
+    composeOptions {
+        kotlinCompilerExtensionVersion composeVersion
+    }
+
+    packagingOptions {
+        resources {
+            excludes += 'META-INF/*'
+        }
+    }
+}
+
+dependencies {
+
+    implementation project(":library:domain")
+
+    // Hilt
+    implementation "com.google.dagger:hilt-android:$hiltPluginVersion"
+    kapt "com.google.dagger:hilt-compiler:$hiltPluginVersion"
+    implementation "androidx.hilt:hilt-navigation-compose:$hiltVersion"
+
+    // Compose
+    implementation platform("androidx.compose:compose-bom:$composeBomVersion")
+    implementation "androidx.compose.material:material"
+    implementation "androidx.compose.ui:ui-tooling-preview"
+    implementation "androidx.compose.material:material-icons-extended"
+    debugImplementation "androidx.compose.ui:ui-tooling"
+
+    // Navigation
+    implementation "androidx.navigation:navigation-compose:$navigationVersion"
+
+    // Glide
+    implementation "com.github.skydoves:landscapist-glide:$glideVersion"
+
+    // Accompanist
+    implementation "com.google.accompanist:accompanist-pager:$accompanistPagerVersion"
+    implementation "com.google.accompanist:accompanist-pager-indicators:$accompanistPagerVersion"
+
+    // Test
+    testImplementation "androidx.test.ext:junit-ktx:$junitVersion"
+    testImplementation "org.jetbrains.kotlinx:kotlinx-coroutines-test:$coroutinesVersion"
+    testImplementation "io.mockk:mockk:$mockkVersion"
+    testImplementation "app.cash.turbine:turbine:$turbineVersion"
+    debugImplementation "androidx.compose.ui:ui-test-manifest"
+
+    implementation("io.coil-kt:coil-compose:2.2.2")
+
+
+    // Android Test
+    androidTestImplementation "io.mockk:mockk-android:$mockkVersion"
+    androidTestImplementation "androidx.compose.ui:ui-test-junit4"
+}
